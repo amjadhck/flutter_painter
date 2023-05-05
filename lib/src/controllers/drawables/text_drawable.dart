@@ -94,6 +94,11 @@ class TextDrawable extends ObjectDrawable {
     return textPainter.size;
   }
 
+  @override
+  String toString() {
+    return 'TextDrawable(text: $text, Position: $position, Scale: $scale, Rotation: $rotationAngle, Style: $style)';
+  }
+
   /// Compares two [TextDrawable]s for equality.
   // @override
   // bool operator ==(Object other) {
