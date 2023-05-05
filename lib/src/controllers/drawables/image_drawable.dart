@@ -12,11 +12,17 @@ class ImageDrawable extends ObjectDrawable {
   /// Whether the image is flipped or not.
   final bool flipped;
 
+  final String? imageString;
+
+  final String id;
+
   /// Creates an [ImageDrawable] with the given [image].
   ImageDrawable({
     required Offset position,
     double rotationAngle = 0,
     double scale = 1,
+    this.imageString = "",
+    required this.id,
     Set<ObjectDrawableAssist> assists = const <ObjectDrawableAssist>{},
     Map<ObjectDrawableAssist, Paint> assistPaints =
         const <ObjectDrawableAssist, Paint>{},
@@ -25,13 +31,15 @@ class ImageDrawable extends ObjectDrawable {
     required this.image,
     this.flipped = false,
   }) : super(
-            position: position,
-            rotationAngle: rotationAngle,
-            scale: scale,
-            assists: assists,
-            assistPaints: assistPaints,
-            hidden: hidden,
-            locked: locked);
+          position: position,
+          rotationAngle: rotationAngle,
+          scale: scale,
+          assists: assists,
+          assistPaints: assistPaints,
+          hidden: hidden,
+          locked: locked,
+          //imageString: imageString,
+        );
 
   /// Creates an [ImageDrawable] with the given [image], and calculates the scale based on the given [size].
   /// The scale will be calculated such that the size of the drawable fits into the provided size.
@@ -48,29 +56,37 @@ class ImageDrawable extends ObjectDrawable {
     bool locked = false,
     bool hidden = false,
     required Image image,
+    String? imageString,
+    required String id,
     bool flipped = false,
   }) : this(
-            position: position,
-            rotationAngle: rotationAngle,
-            scale: _calculateScaleFittedToSize(image, size),
-            assists: assists,
-            assistPaints: assistPaints,
-            image: image,
-            flipped: flipped,
-            hidden: hidden,
-            locked: locked);
+          position: position,
+          rotationAngle: rotationAngle,
+          scale: _calculateScaleFittedToSize(image, size),
+          assists: assists,
+          assistPaints: assistPaints,
+          image: image,
+          flipped: flipped,
+          hidden: hidden,
+          locked: locked,
+          imageString: imageString,
+          id: id,
+        );
 
   /// Creates a copy of this but with the given fields replaced with the new values.
   @override
-  ImageDrawable copyWith(
-      {bool? hidden,
-      Set<ObjectDrawableAssist>? assists,
-      Offset? position,
-      double? rotation,
-      double? scale,
-      Image? image,
-      bool? flipped,
-      bool? locked}) {
+  ImageDrawable copyWith({
+    bool? hidden,
+    Set<ObjectDrawableAssist>? assists,
+    Offset? position,
+    double? rotation,
+    double? scale,
+    Image? image,
+    bool? flipped,
+    bool? locked,
+    String? imageString,
+    String? id,
+  }) {
     return ImageDrawable(
       hidden: hidden ?? this.hidden,
       assists: assists ?? this.assists,
@@ -80,6 +96,8 @@ class ImageDrawable extends ObjectDrawable {
       image: image ?? this.image,
       flipped: flipped ?? this.flipped,
       locked: locked ?? this.locked,
+      imageString: imageString ?? this.imageString,
+      id: id ?? this.id,
     );
   }
 
@@ -108,6 +126,11 @@ class ImageDrawable extends ObjectDrawable {
       image.width * scale,
       image.height * scale,
     );
+  }
+
+  @override
+  String toString() {
+    return 'ImageDrawable(id: $id, image: $image, imageString: $imageString, Position: $position, Scale: $scale, Rotation: $rotationAngle)';
   }
 
   /// Compares two [ImageDrawable]s for equality.
