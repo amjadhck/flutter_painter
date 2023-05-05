@@ -288,24 +288,46 @@ class PainterController extends ValueNotifier<PainterControllerValue> {
   ///   });
   /// }
   /// ```
-  void addImage(ui.Image image, [Size? size]) {
+  void addImage(
+    ui.Image image,
+    String id, {
+    Size? size,
+    Offset? position,
+    double? rotation,
+    double? scale,
+    String? imageString,
+  }) {
     // Calculate the center of the painter
     final renderBox =
         painterKey.currentContext?.findRenderObject() as RenderBox?;
     final center = renderBox == null
         ? Offset.zero
-        : Offset(
-            renderBox.size.width / 2,
-            renderBox.size.height / 2,
-          );
+        : position ??
+            Offset(
+              renderBox.size.width / 2,
+              renderBox.size.height / 2,
+            );
 
     final ImageDrawable drawable;
 
     if (size == null) {
-      drawable = ImageDrawable(image: image, position: center);
+      drawable = ImageDrawable(
+        id: id,
+        image: image,
+        position: center,
+        scale: scale ?? 1,
+        rotationAngle: rotation ?? 0,
+        imageString: imageString,
+      );
     } else {
       drawable = ImageDrawable.fittedToSize(
-          image: image, position: center, size: size);
+        id: id,
+        image: image,
+        position: center,
+        size: size,
+        rotationAngle: rotation ?? 0,
+        imageString: imageString,
+      );
     }
 
     addDrawables([drawable]);
